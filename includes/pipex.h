@@ -24,6 +24,8 @@ int		print_error(int num, char* name, char* err);
 char**	ft_split(char const *s, char c);
 t_data*	init_data(char **av, char** env);
 int		free_data(t_data *data);
-int		pipex(t_data* data);
+int		exec_pipex(t_data* data);
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+int		str_len(char* str);
 
 #endif
