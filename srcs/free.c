@@ -6,34 +6,39 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:34:34 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 15:41:12 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/28 17:05:21 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+void	free_tab(char **tab)
+{
+	int	i;
+
+	if (tab)
+	{
+		i = 0;
+		while (tab[i])
+		{
+			free(tab[i]);
+			i++;
+		}
+		free(tab);
+	}
+}
+
 int	free_data(t_data *data)
 {
-	int i;
-
 	if (data)
 	{
-		close(data->fd_in);
-		close(data->fd_out);
-		if (data->cmd1)
-		{
-			i = 0;
-			while (data->cmd1 && data->cmd1[i])
-				free(data->cmd1[i++]);
-			free(data->cmd1);
-		}
-		if (data->cmd2)
-		{
-			i = 0;
-			while (data->cmd2[i])
-				free(data->cmd2[i++]);
-			free(data->cmd2);
-		}
+		if (data->fd_in)
+			close(data->fd_in);
+		if (data->fd_out)
+			close(data->fd_out);
+		free_tab(data->cmd1);
+		free_tab(data->cmd2);
+		free_tab(data->env_path);
 		free(data);
 	}
 	return (0);

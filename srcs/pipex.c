@@ -6,31 +6,11 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:37:54 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 16:08:06 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/28 17:30:19 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	**get_env_path(char **env)
-{
-	int		i;
-	char*	path_line;
-	char**	path_tab;
-	
-	i = 0;
-	while (env[i])
-	{
-		path_line = ft_strnstr(env[i], "PATH", strlen(env[i]));
-		if (path_line == env[i])
-		{
-			path_tab = ft_split(&(env[i][5]), ':');
-			return (path_tab);
-		}
-		i++;
-	}
-	return (NULL);
-}
 
 char	*get_cmd_path(char **env_path, char	*cmd)
 {
@@ -53,7 +33,7 @@ char	*get_cmd_path(char **env_path, char	*cmd)
 	return NULL;
 }
 
-int	execute_cmd(char **env_path, t_data *data)
+int	execute_cmd(t_data *data)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
@@ -67,7 +47,7 @@ int	execute_cmd(char **env_path, t_data *data)
 	{
 		dup2(data->fd_in, 0);
 		dup2(pipe_fd[1], 1);
-		if (execve(get_cmd_path(env_path, *data->cmd1), data->cmd1, data->env) < 0)
+		if (execve(get_cmd_path(data->env_path, *data->cmd1), data->cmd1, data->env) < 0)
 		{
 			print_error(errno, NULL, strerror(errno));
 			exit(1);
@@ -83,7 +63,7 @@ int	execute_cmd(char **env_path, t_data *data)
 	{
 		dup2(pipe_fd[0], 0);
 		dup2(data->fd_out, 1);
-		if (execve(get_cmd_path(env_path, *data->cmd2), data->cmd2, data->env) < 0)
+		if (execve(get_cmd_path(data->env_path, *data->cmd2), data->cmd2, data->env) < 0)
 		{
 			print_error(errno, NULL, strerror(errno));
 			exit(1);
@@ -91,19 +71,12 @@ int	execute_cmd(char **env_path, t_data *data)
 	}
 	waitpid(pid, 0, 0);
 	close(pipe_fd[0]);
+	close(data->fd_out);
 	return (0);
 }
 
 int	exec_pipex(t_data	*data)
 {
-	char	**env_path;
-
-	env_path = get_env_path(data->env);
-	execute_cmd(env_path, data);
-	for (int i = 0; env_path[i]; i++)
-		free(env_path[i]);
-	free(env_path);
-	close(data->fd_in);
-	close(data->fd_out);
+	execute_cmd(data);
 	return (1);
 }

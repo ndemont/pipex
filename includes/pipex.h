@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:30:55 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 14:17:26 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/28 16:24:27 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_data
 	int		fd_out;
 	char	**cmd1;
 	char	**cmd2;
+	char	**env_path;
 	char	**env;
 }				t_data;
 
