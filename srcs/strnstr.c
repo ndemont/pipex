@@ -1,4 +1,16 @@
-# include "pipex.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strnstr.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 12:42:44 by ndemont           #+#    #+#             */
+/*   Updated: 2021/10/28 12:42:57 by ndemont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "pipex.h"
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
@@ -8,7 +20,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 
 	i = 0;
 	if (needle[i] == '\0')
-		return ((char*)haystack);
+		return ((char *)haystack);
 	while (haystack[i] && i < len)
 	{
 		j = 0;
@@ -22,7 +34,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 				j++;
 			}
 			if (needle[j] == '\0')
-				return (&((char*)haystack)[begin]);
+				return (&((char *)haystack)[begin]);
 		}
 		i = begin + 1;
 	}

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 12:40:00 by ndemont           #+#    #+#             */
+/*   Updated: 2021/10/28 12:42:31 by ndemont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 static int	ft_count_strlen(const char *s, char c)
@@ -29,9 +41,10 @@ static int	ft_count_splitlen(const char *s, char c)
 
 static const char	*ft_dup_split(char **split, int i, const char *s, char c)
 {
-	int j;
+	int	j;
 
-	if (!(split[i] = malloc(sizeof(char) * (ft_count_strlen(s, c) + 1))))
+	split[i] = malloc(sizeof(char) * (ft_count_strlen(s, c) + 1));
+	if (!split[i])
 		return (0);
 	j = 0;
 	while (*s != c && *s)
@@ -52,8 +65,9 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	count = ft_count_splitlen((char*)s, c);
-	if (!(split = malloc(sizeof(char*) * (count + 1))))
+	count = ft_count_splitlen((char *)s, c);
+	split = malloc(sizeof(char *) * (count + 1));
+	if (!split)
 		return (0);
 	split[count] = 0;
 	i = 0;
@@ -61,7 +75,8 @@ char	**ft_split(char const *s, char c)
 	{
 		if (*s != c)
 		{
-			if (!(s = ft_dup_split(split, i, s, c)))
+			s = ft_dup_split(split, i, s, c);
+			if (!s)
 				return (NULL);
 			i++;
 		}
