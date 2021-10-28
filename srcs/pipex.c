@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:37:54 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 17:30:19 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/28 17:34:25 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*get_cmd_path(char **env_path, char	*cmd)
 	char	*cmd_path;
 
 	i = 0;
-
 	while (env_path[i])
 	{
 		cmd_path = ft_strjoin("/", cmd);
@@ -30,7 +29,7 @@ char	*get_cmd_path(char **env_path, char	*cmd)
 		i++;
 	}
 	print_error(errno, NULL, strerror(errno));
-	return NULL;
+	return (NULL);
 }
 
 int	execute_cmd(t_data *data)
@@ -39,7 +38,7 @@ int	execute_cmd(t_data *data)
 	int		pipe_fd[2];
 
 	if (pipe(pipe_fd) == -1)
-			return (print_error(errno, NULL, strerror(errno)));
+		return (print_error(errno, NULL, strerror(errno)));
 	pid = fork();
 	if (pid < 0)
 		return (print_error(errno, NULL, strerror(errno)));

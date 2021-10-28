@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 13:59:06 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 14:08:03 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/28 17:32:45 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char	*ft_strdup(const char *s1)
 	int		len;
 
 	len = ft_strlen(s1);
-	if (!(dup = malloc(sizeof(char) * (len + 1))))
+	dup = malloc(sizeof(char) * (len + 1));
+	if (!dup)
 		return (NULL);
 	i = 0;
 	while (i < len)
@@ -42,7 +43,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (ft_strdup(s2));
 	if (!s2)
 		return (ft_strdup(s1));
-	if (!(cat = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
+	cat = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!cat)
 		return (0);
 	i = 0;
 	while (s1[i])
