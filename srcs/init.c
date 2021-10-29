@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:35:41 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 17:06:17 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/29 15:11:26 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ t_data	*init_data(char **av, char	**env)
 	data->fd_out = 0;
 	data->fd_in = open(av[1], O_RDONLY);
 	if (data->fd_in < 0)
-		return (print_and_free(data, av[1]));
+		print_error(errno, av[1], strerror(errno));
 	data->fd_out = open(av[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (data->fd_out < 0)
-		return (print_and_free(data, av[2]));
+		print_error(errno, av[4], strerror(errno));
 	data->cmd1 = ft_split(av[2], ' ');
 	if (!data->cmd1)
 		return (print_and_free(data, NULL));
@@ -61,8 +61,8 @@ t_data	*init_data(char **av, char	**env)
 	if (!data->cmd2)
 		return (print_and_free(data, NULL));
 	data->env_path = get_env_path(env);
-	data->env = env;
-	if (!data->env)
+	if (!data->env_path)
 		return (print_and_free(data, NULL));
+	data->env = env;
 	return (data);
 }

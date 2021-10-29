@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:34:34 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 17:05:21 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/29 14:10:16 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	free_data(t_data *data)
 {
 	if (data)
 	{
-		if (data->fd_in)
+		if (data->fd_in > 0)
 			close(data->fd_in);
-		if (data->fd_out)
+		if (data->fd_out > 0)
 			close(data->fd_out);
 		free_tab(data->cmd1);
 		free_tab(data->cmd2);
