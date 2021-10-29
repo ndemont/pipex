@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 13:59:06 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 17:32:45 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/29 10:46:30 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	cat = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!cat)
 		return (0);
-	i = 0;
-	while (s1[i])
-	{
+	i = -1;
+	while (s1[++i])
 		cat[i] = s1[i];
-		i++;
-	}
 	while (*s2)
 	{
 		cat[i] = *s2;

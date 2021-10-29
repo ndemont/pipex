@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:36:24 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 16:24:01 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/29 10:52:34 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ int	main(int ac, char **av, char **env)
 	if (!data)
 		return (errno);
 	ret = exec_pipex(data);
-	return (free_data(data));
+	free_data(data);
+	return (ret);
 }

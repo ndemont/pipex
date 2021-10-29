@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:37:54 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 17:34:25 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/10/29 10:51:26 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,10 @@ char	*get_cmd_path(char **env_path, char	*cmd)
 	return (NULL);
 }
 
-int	execute_cmd(t_data *data)
+int	execute_cmd1(t_data *data, int *pipe_fd, char **cmd)
 {
 	pid_t	pid;
-	int		pipe_fd[2];
 
-	if (pipe(pipe_fd) == -1)
-		return (print_error(errno, NULL, strerror(errno)));
 	pid = fork();
 	if (pid < 0)
 		return (print_error(errno, NULL, strerror(errno)));
@@ -46,15 +43,22 @@ int	execute_cmd(t_data *data)
 	{
 		dup2(data->fd_in, 0);
 		dup2(pipe_fd[1], 1);
-		if (execve(get_cmd_path(data->env_path, *data->cmd1), data->cmd1, data->env) < 0)
+		if (execve(get_cmd_path(data->env_path, *cmd), cmd, data->env) < 0)
 		{
 			print_error(errno, NULL, strerror(errno));
 			exit(1);
 		}
 	}
+	waitpid(pid, 0, 0);
 	close(data->fd_in);
 	close(pipe_fd[1]);
-	waitpid(pid, 0, 0);
+	return (0);
+}
+
+int	execute_cmd2(t_data *data, int *pipe_fd, char **cmd)
+{
+	pid_t	pid;
+
 	pid = fork();
 	if (pid < 0)
 		return (print_error(errno, NULL, strerror(errno)));
@@ -62,7 +66,7 @@ int	execute_cmd(t_data *data)
 	{
 		dup2(pipe_fd[0], 0);
 		dup2(data->fd_out, 1);
-		if (execve(get_cmd_path(data->env_path, *data->cmd2), data->cmd2, data->env) < 0)
+		if (execve(get_cmd_path(data->env_path, *cmd), cmd, data->env) < 0)
 		{
 			print_error(errno, NULL, strerror(errno));
 			exit(1);
@@ -76,6 +80,12 @@ int	execute_cmd(t_data *data)
 
 int	exec_pipex(t_data	*data)
 {
-	execute_cmd(data);
-	return (1);
+	int		pipe_fd[2];
+	int		ret;
+
+	if (pipe(pipe_fd) == -1)
+		return (print_error(errno, NULL, strerror(errno)));
+	ret = execute_cmd1(data, pipe_fd, data->cmd1);
+	ret = execute_cmd2(data, pipe_fd, data->cmd2);
+	return (ret);
 }
