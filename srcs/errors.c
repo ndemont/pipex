@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:32:57 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/28 14:17:28 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/11/06 16:59:56 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	put_str(char *str)
 
 int	print_error(int num, char *name, char *err)
 {
+	put_str("pipex: ");
 	if (name)
 	{
 		put_str(name);

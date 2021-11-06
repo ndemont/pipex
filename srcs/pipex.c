@@ -6,7 +6,7 @@
 /*   By: ndemont <ndemont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 12:37:54 by ndemont           #+#    #+#             */
-/*   Updated: 2021/10/29 18:34:31 by ndemont          ###   ########.fr       */
+/*   Updated: 2021/11/06 18:02:29 by ndemont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ int	execute_cmd1(t_data *data, int *pipe_fd, char **cmd)
 		if (dup2(pipe_fd[1], 1) < 0)
 			exit(pipex_exit(data, cmd_path));
 		if (execve(cmd_path, cmd, data->env) < 0)
+		{
+			print_error(errno, *cmd, "Command not found");
 			exit(pipex_exit(data, cmd_path));
+		}
 	}
 	waitpid(pid, 0, 0);
 	if (cmd_path)
@@ -94,7 +97,10 @@ int	execute_cmd2(t_data *data, int *pipe_fd, char **cmd)
 		if (dup2(data->fd_out, 1) < 0)
 			exit(pipex_exit(data, cmd_path));
 		if (execve(cmd_path, cmd, data->env) < 0)
+		{
+			print_error(errno, "", "Command not found");
 			exit(pipex_exit(data, cmd_path));
+		}
 	}
 	waitpid(pid, 0, 0);
 	if (cmd_path)
